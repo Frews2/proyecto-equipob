@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Ko5FSzEkmYI9Q7lgnASkuK5DXKkpBvJ7fVUrjlxnvRNs/YHhDnrLHWpUiMkR8PbV+ib1FiukoW17d8UUwMUE/g==",
+  "success": true,
+  "projectFilePath": "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\MSCuenta.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\delma\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\delma\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\delma\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\delma\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\delma\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\delma\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}
