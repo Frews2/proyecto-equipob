@@ -7,20 +7,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Accounts` DEFAULT CHARACTER SET utf8 ;
+USE `Accounts` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Table `Accounts`.`Status`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
-
--- -----------------------------------------------------
--- Table `mydb`.`Status`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Status` (
+CREATE TABLE IF NOT EXISTS `Accounts`.`Status` (
   `StatusID` INT NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`StatusID`))
@@ -28,9 +21,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Account`
+-- Table `Accounts`.`Account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Account` (
+CREATE TABLE IF NOT EXISTS `Accounts`.`Account` (
   `AccountID` INT NOT NULL AUTO_INCREMENT,
   `Username` VARCHAR(45) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
@@ -42,16 +35,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Account` (
   INDEX `fk_Account_Status1_idx` (`StatusID` ASC) VISIBLE,
   CONSTRAINT `fk_Account_Status1`
     FOREIGN KEY (`StatusID`)
-    REFERENCES `mydb`.`Status` (`StatusID`)
+    REFERENCES `Accounts`.`Status` (`StatusID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Password`
+-- Table `Accounts`.`Password`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Password` (
+CREATE TABLE IF NOT EXISTS `Accounts`.`Password` (
   `PasswordID` INT NOT NULL AUTO_INCREMENT,
   `PasswordString` VARCHAR(60) NOT NULL,
   `OwnerID` INT NOT NULL,
@@ -59,12 +52,15 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Password` (
   INDEX `fk_Password_Account_idx` (`OwnerID` ASC) VISIBLE,
   CONSTRAINT `fk_Password_Account`
     FOREIGN KEY (`OwnerID`)
-    REFERENCES `mydb`.`Account` (`AccountID`)
+    REFERENCES `Accounts`.`Account` (`AccountID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE USER 'spotymeAdmin' IDENTIFIED BY 'proyectoredes';
+GRANT ALL PRIVILEGES ON *.* TO 'spotymeAdmin'@'%' WITH GRANT OPTION;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
