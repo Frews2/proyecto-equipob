@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+    # Databases
+    mysql_account:
+        image: mysql/mysql-server:latest
+        ports:
+            - "3310:3306"
+        restart: always
+        volumes:
+            - db_volume_Accounts:/var/lib/mysql
+            - ../db/Accounts.sql:/docker-entrypoint-initdb.d/Accounts.sql:ro
+        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
+        environment: 
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_HOST: localhost
+            MYSQL_DATABASE: "Accounts"
+            MYSQL_USER: "root"
+        container_name: db_Accounts
+
+
+volumes:
+    db_volume_Accounts:
