@@ -18,6 +18,17 @@ services:
             MYSQL_USER: "root"
         container_name: db_Accounts
 
-
+    # Microservicios
+    ms_account:
+        image: ms_account_spotyme
+        depends_on: 
+            - "mysql_account"
+        ports:
+            - "8080:80"
+        build: 
+            context: ../MSAccount/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: "server=mysql_account;user=spotymeAdmin;password=proyectoredes;database=Account"
 volumes:
     db_volume_Accounts:
