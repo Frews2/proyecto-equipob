@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\MSCuenta.csproj": {}
+    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj": {}
   },
   "projects": {
-    "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\MSCuenta.csproj": {
+    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\MSCuenta.csproj",
+        "projectUniqueName": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj",
         "projectName": "MSCuenta",
-        "projectPath": "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\MSCuenta.csproj",
-        "packagesPath": "C:\\Users\\delma\\.nuget\\packages\\",
-        "outputPath": "D:\\ProyectosVisualStudio\\proyecto-equipob\\MSCuenta\\obj\\",
+        "projectPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj",
+        "packagesPath": "C:\\Users\\parke\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\delma\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\parke\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +43,16 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[5.0.0-alpha.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
