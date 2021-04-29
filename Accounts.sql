@@ -29,8 +29,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Accounts`.`Account` (
   `AccountID` VARCHAR(255) NOT NULL,
-  `Username` VARCHAR(45) NOT NULL,
-  `Email` VARCHAR(45) NOT NULL,
+  `Username` VARCHAR(200) NOT NULL,
+  `Email` VARCHAR(200) NOT NULL,
   `IsUser` TINYINT NOT NULL,
   `StatusID` INT NOT NULL,
   PRIMARY KEY (`AccountID`),
