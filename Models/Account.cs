@@ -12,7 +12,7 @@ namespace MSCuenta.Models
             Passwords = new HashSet<Password>();
         }
 
-        public int AccountId { get; set; }
+        public string AccountId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public sbyte IsUser { get; set; }

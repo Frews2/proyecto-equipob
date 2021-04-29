@@ -36,15 +36,16 @@ namespace MSCuenta.Models
             {
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.Username, "Username_UNIQUE")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Email, "email_UNIQUE")
                     .IsUnique();
 
                 entity.HasIndex(e => e.StatusId, "fk_Account_Status1_idx");
 
-                entity.Property(e => e.AccountId).HasColumnName("AccountID");
+                entity.Property(e => e.AccountId)
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("AccountID")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -73,9 +74,18 @@ namespace MSCuenta.Models
 
                 entity.HasIndex(e => e.OwnerId, "fk_Password_Account_idx");
 
-                entity.Property(e => e.PasswordId).HasColumnName("PasswordID");
+                entity.Property(e => e.PasswordId)
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("PasswordID")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.OwnerId).HasColumnName("OwnerID");
+                entity.Property(e => e.OwnerId)
+                    .IsRequired()
+                    .HasColumnType("varchar(255)")
+                    .HasColumnName("OwnerID")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.PasswordString)
                     .IsRequired()

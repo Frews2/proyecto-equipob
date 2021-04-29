@@ -13,8 +13,6 @@ namespace MSCuenta
     {
         public static void Main(string[] args)
         {
-            string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-            Console.WriteLine(connectionString);
             CreateHostBuilder(args).Build().Run();
         }
 

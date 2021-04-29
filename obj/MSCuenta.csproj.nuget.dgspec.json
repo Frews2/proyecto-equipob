@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj": {}
+    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj": {
+    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj",
+        "projectUniqueName": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
         "projectName": "MSCuenta",
-        "projectPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\MSCuenta.csproj",
+        "projectPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
         "packagesPath": "C:\\Users\\parke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSCuenta\\obj\\",
+        "outputPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -48,6 +48,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.4, )"
+            },
+            "MySql.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
