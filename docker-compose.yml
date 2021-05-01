@@ -73,7 +73,7 @@ services:
             context: ../MSAccount/
             dockerfile: Dockerfile
         environment: 
-            DB_CONNECTION_STRING: "server=mysql_account;user=spotymeAdmin;password=proyectoredes;database=Account"
+            DB_CONNECTION_STRING: "server=mysql_account;user=spotymeAdmin;password=proyectoredes;database=Accounts"
     ms_public_library:
         image: ms_public_library_spotyme
         depends_on: 
