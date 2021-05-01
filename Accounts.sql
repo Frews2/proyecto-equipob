@@ -66,3 +66,43 @@ GRANT ALL PRIVILEGES ON *.* TO 'spotymeAdmin'@'%' WITH GRANT OPTION;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+-- -----------------------------------------------------
+-- Data for table `Accounts`.`Status`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Accounts`;
+INSERT INTO `Accounts`.`Status` (`StatusID`, `Name`) VALUES (1, 'Active');
+INSERT INTO `Accounts`.`Status` (`StatusID`, `Name`) VALUES (2, 'Bannred');
+INSERT INTO `Accounts`.`Status` (`StatusID`, `Name`) VALUES (3, 'Admin');
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `Accounts`.`Account`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Accounts`;
+INSERT INTO `Accounts`.`Account` (`AccountID`, `Username`, `Email`, `IsUser`, `StatusID`) 
+VALUES ('537a412b-e084-474a-a68d-705982b61802', 'spotymeAdmin', 'parkersjames87@gmail.com', 0, 3);
+INSERT INTO `Accounts`.`Account` (`AccountID`, `Username`, `Email`, `IsUser`, `StatusID`) 
+VALUES ('3f835f14-8111-4a1d-8385-2871743290e6', 'frews', 'zS18012183@estudiantes.uv.mx', 1, 1);
+INSERT INTO `Accounts`.`Account` (`AccountID`, `Username`, `Email`, `IsUser`, `StatusID`) 
+VALUES ('da43f900-890f-469e-90b3-18cdfacce74b', 'pklove', 'zS18012143@estudiantes.uv.mx', 1, 1);
+
+COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `Accounts`.`Password`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `Accounts`;
+INSERT INTO `Accounts`.`Password` (`PasswordID`, `PasswordString`, `OwnerID`) 
+VALUES ('17ab436b-5efc-46a3-a5d8-7d38015b2428', 'proyectoredes', '537a412b-e084-474a-a68d-705982b61802');
+INSERT INTO `Accounts`.`Password` (`PasswordID`, `PasswordString`, `OwnerID`) 
+VALUES ('796078d1-640a-40a2-83b7-15de3eb1aaae', 'elfrews', '3f835f14-8111-4a1d-8385-2871743290e6');
+INSERT INTO `Accounts`.`Password` (`PasswordID`, `PasswordString`, `OwnerID`) 
+VALUES ('f5770b74-c458-4d29-9b42-c926b78f8973', 'eladmin', 'da43f900-890f-469e-90b3-18cdfacce74b');
+
+COMMIT;
