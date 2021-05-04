@@ -18,51 +18,32 @@ services:
             MYSQL_DATABASE: "Accounts"
             MYSQL_USER: "root"
         container_name: db_Accounts
-    #Public Libraries Database
-    mysql_public_library:
-        image: mysql/mysql-server:latest
-        ports:
-            - "3309:3306"
-        restart: always
-        volumes:
-            - db_volume_Libraries:/var/lib/mysql
-            - ../db/Libraries.sql:/docker-entrypoint-initdb.d/Libraries.sql:ro
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
-        environment: 
-            MYSQL_ROOT_PASSWORD: "root"
-            MYSQL_HOST: localhost
-            MYSQL_DATABASE: "Libraries"
-            MYSQL_USER: "root"
-        container_name: db_Public_Library
-    #Private Libraries Database
-    mysql_private_library:
-        image: mysql/mysql-server:latest
-        ports:
-            - "3308:3306"
-        restart: always
-        volumes:
-            - db_volume_Libraries:/var/lib/mysql
-            - ../db/Libraries.sql:/docker-entrypoint-initdb.d/Libraries.sql:ro
-        command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_0900_ai_ci']
-        environment: 
-            MYSQL_ROOT_PASSWORD: "root"
-            MYSQL_HOST: localhost
-            MYSQL_DATABASE: "Libraries"
-            MYSQL_USER: "root"
-        container_name: db_Private_Library
-    #Music metadata database
-    mongo_music:
+    #Public Library Database
+    mongo_public_library:
         image: mongo:4.4.4
         ports: 
             - "3311:27019"
         restart: always
         volumes:
-            - db_volume_Music:/var/lib/mongo
+            - db_volume_public_library:/var/lib/mongo
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: spotymeAdmin
+            MONGO_INITDB_ROOT_PASSWORD: proyectoredes
+        container_name: db_Music
+    #Private Library Database
+    mongo_private_library:
+        image: mongo:4.4.4
+        ports: 
+            - "3312:27019"
+        restart: always
+        volumes:
+            - db_volume_private_library:/var/lib/mongo
         environment:
             MONGO_INITDB_ROOT_USERNAME: spotymeAdmin
             MONGO_INITDB_ROOT_PASSWORD: proyectoredes
         container_name: db_Music
     # Microservicios
+    # Servicio de cuentas
     ms_account:
         image: ms_account_spotyme
         depends_on: 
@@ -74,18 +55,19 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "server=mysql_account;user=spotymeAdmin;password=proyectoredes;database=Accounts"
+    # Servicio de biblioteca publica
     ms_public_library:
         image: ms_public_library_spotyme
         depends_on: 
-            - "mysql_public_library"
+            - "mongo_public_library"
         ports:
             - "8081:80"
         build: 
             context: ../MSPublicLibrary/
             dockerfile: Dockerfile
         environment: 
-            DB_CONNECTION_STRING: "server=mysql_public_library;user=spotymeAdmin;password=proyectoredes;database=Libraries"
+            DB_CONNECTION_STRING: "server=mongo_public_library;user=spotymeAdmin;password=proyectoredes;database=Libraries"
 volumes:
     db_volume_Accounts:
-    db_volume_Libraries:
-    db_volume_Music:
+    db_volume_public_library:
+    db_volume_private_library:
