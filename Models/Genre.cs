@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+/*
+ Date: 05/05/2021
+ Author(s): Ricardo Moguel Sanchez
+*/
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-#nullable disable
-
-namespace MSPublicLibrary.Models
-{
-    public partial class Genre
+namespace MSPublicLibrary.Models{
+    public class Genre
     {
-        public Genre()
-        {
-            Songs = new HashSet<Song>();
-        }
-
-        public int GenreId { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ObjectId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-
-        public virtual ICollection<Song> Songs { get; set; }
     }
 }
