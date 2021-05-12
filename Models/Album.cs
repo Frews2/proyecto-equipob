@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 
-namespace MSPublicLibrary.Models{
+namespace MSPrivateLibrary.Models{
     public class Album
     {
         [BsonId]

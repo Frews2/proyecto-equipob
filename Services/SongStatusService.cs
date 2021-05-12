@@ -3,18 +3,18 @@
  Author(s): Ricardo Moguel Sanchez
 */
 using System;
-using MSPublicLibrary.Models;
+using MSPrivateLibrary.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MSPublicLibrary.Services
+namespace MSPrivateLibrary.Services
 {
     public class SongStatusService
     {
         private readonly IMongoCollection<SongStatus> status;
 
-        public SongStatusService(IPublicLibraryDatabaseSettings settings)
+        public SongStatusService(IPrivateLibraryDatabaseSettings settings)
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             var database = client.GetDatabase(settings.DatabaseName);

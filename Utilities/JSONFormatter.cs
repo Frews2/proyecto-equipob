@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace MSPublicLibrary.Utilities
+namespace MSPrivateLibrary.Utilities
 {
     public static class JSONFormatter
     {
@@ -43,7 +43,7 @@ namespace MSPublicLibrary.Utilities
             returnObject = new JObject
             {
                 { "success", isSuccess },
-                { "origin", "public_library_service" },
+                { "origin", "private_library_service" },
                 { "data", msData }
             };
 
@@ -62,7 +62,7 @@ namespace MSPublicLibrary.Utilities
             returnObject = new JObject
             {
                 { "success", isSuccess },
-                { "origin", "public_library_service" },
+                { "origin", "private_library_service" },
                 { "data", msData }
             };
 

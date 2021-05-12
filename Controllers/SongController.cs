@@ -8,22 +8,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MSPublicLibrary.Models;
-using MSPublicLibrary.Services;
+using MSPrivateLibrary.Models;
+using MSPrivateLibrary.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using MongoDB.Driver;
-using MSPublicLibrary.Utilities;
+using MSPrivateLibrary.Utilities;
 
-namespace MSPublicLibrary.Controllers
+namespace MSPrivateLibrary.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class SongController : ControllerBase
     {
-        private const string APPROVED = "1";
-        private const string REJECTED = "2";
-        private const string PENDING = "3";
+        private const string UNREQUESTED = "1";
+        private const string REQUESTED = "2";
         private readonly SongService _songService;
 
         private readonly ILogger<SongController> libraryLog;
@@ -42,7 +41,7 @@ namespace MSPublicLibrary.Controllers
             
             if(String.IsNullOrEmpty(title) && String.IsNullOrEmpty(id))
             {
-                songs = await _songService.ShowApprovedSongs();
+                songs = await _songService.ShowSongs();
             } 
             else
             {
@@ -67,52 +66,14 @@ namespace MSPublicLibrary.Controllers
             return Ok(returnObject);
         }
 
-        [HttpGet("ShowPendingSongs")]
-        public async Task<ActionResult<JObject>> SearchRequests()
-        {
-            JObject returnObject;
-            List<Song> songs = null;
-            
-            songs = await _songService.ShowSongRequests();
-
-            if (songs.Count < 1)
-            {
-                string errorMessage  = "There are no pending songs";
-                returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
-                return BadRequest(returnObject);
-            }
-
-            returnObject = JSONFormatter.SuccessMessageFormatter("Song found", songs);
-            return Ok(returnObject);
-        }
-
-        [HttpGet("ShowRejectedSongs")]
-        public async Task<ActionResult<JObject>> SearchPending()
-        {
-            JObject returnObject;
-            List<Song> songs = null;
-            
-            songs = await _songService.ShowSongRejects();
-
-            if (songs.Count < 1)
-            {
-                string errorMessage  = "There are no rejected songs";
-                returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
-                return BadRequest(returnObject);
-            }
-
-            returnObject = JSONFormatter.SuccessMessageFormatter("Song found", songs);
-            return Ok(returnObject);
-        }
-
-        [HttpPost("UploadSongRequest")]
+        [HttpPost("UploadSong")]
         public async Task<ActionResult<Song>> UploadSong([FromBody] Song newSong)
         {
             JObject returnObject;
 
             if (newSong == null)
             {
-                libraryLog.LogError("REGISTER SONG REQUEST ERROR: Fields cannot be empty");
+                libraryLog.LogError("REGISTER SONG ERROR: Fields cannot be empty");
                 string errorMessage = "The fields for the new song are empty. Please fill all fields and try again";
                 returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
                 return BadRequest(returnObject);
@@ -141,15 +102,15 @@ namespace MSPublicLibrary.Controllers
                         }
 
                     } while (isIdDuplicate);
-                    newSong.StatusId = PENDING;
-                    proxySong = await _songService.AddNewSongPetition(newSong);
-                    libraryLog.LogInformation("REGISTER SONG REQUEST SUCCESSFUL: {0}", newSong.Title);
-                    returnObject = JSONFormatter.SuccessMessageFormatter("Song request registered successfully", proxySong);
+                    newSong.StatusId = UNREQUESTED;
+                    proxySong = await _songService.AddNewSong(newSong);
+                    libraryLog.LogInformation("REGISTER SONG SUCCESSFUL: {0}", newSong.Title);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Song registered successfully", proxySong);
                     return Ok(returnObject);
                 }
                 catch (Exception ex)
                 {
-                    libraryLog.LogError("REGISTER SONG REQUEST EXCEPTION:\n" + ex.Message);
+                    libraryLog.LogError("REGISTER SONG EXCEPTION:\n" + ex.Message);
                     returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
                     return BadRequest(returnObject);
                 }
@@ -219,8 +180,8 @@ namespace MSPublicLibrary.Controllers
             }
         }
 
-        [HttpPut("RejectSong")]
-        public async Task<ActionResult<JObject>> RejectSong([FromQuery]string songId)
+        [HttpPut("RequestSong")]
+        public async Task<ActionResult<JObject>> RequestSong([FromQuery]string songId)
         {
             JObject returnObject;
             Song selectedSong = null;
@@ -231,7 +192,7 @@ namespace MSPublicLibrary.Controllers
 
                 if (selectedSong == null)
                 {
-                    libraryLog.LogError("REJECT SONG REQUEST ERROR: Song not found");
+                    libraryLog.LogError("SONG REQUEST ERROR: Song not found");
                     string errorMessage = "Song not found";
                     returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
                     return BadRequest(returnObject);
@@ -240,30 +201,20 @@ namespace MSPublicLibrary.Controllers
                 {
                     Song proxySong = null;
 
-                    if(selectedSong.StatusId.Equals(REJECTED))
+                    if(selectedSong.StatusId.Equals(REQUESTED))
                     {
-                        libraryLog.LogError("REJECT SONG REQUEST ERROR: Song Request already rejected");
-                        string errorMessage = "ERROR: This song has already been rejected.";
+                        libraryLog.LogError("SONG REQUEST ERROR: Song already requested");
+                        string errorMessage = "ERROR: This song has already been requested.";
                         returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
                         return BadRequest(returnObject);
                     }
                     else
                     {
-                        if(selectedSong.StatusId.Equals(APPROVED))
-                        {
-                            libraryLog.LogError("REJECT SONG REQUEST ERROR: Approved Song cannot be rejected");
-                            string errorMessage = "ERROR: This song has  been approved and cannot be rejected.";
-                            returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
-                            return BadRequest(returnObject);
-                        }
-                        else
-                        {
-                            selectedSong.StatusId = REJECTED;
-                            proxySong = await _songService.UpdateSong(selectedSong);
-                            libraryLog.LogInformation("REJECT SONG REQUEST SUCCESSFUL: {0}", proxySong.Title);
-                            returnObject = JSONFormatter.SuccessMessageFormatter("Song rejected successfully", proxySong);
-                            return Ok(returnObject);
-                        }
+                        selectedSong.StatusId = REQUESTED;
+                        proxySong = await _songService.UpdateSong(selectedSong);
+                        libraryLog.LogInformation("SONG REQUEST SUCCESSFUL: {0}", proxySong.Title);
+                        returnObject = JSONFormatter.SuccessMessageFormatter("Song requested successfully", proxySong);
+                        return Ok(returnObject);
                     }         
                 }
             }
@@ -275,19 +226,19 @@ namespace MSPublicLibrary.Controllers
             }
         }
 
-        [HttpPut("ApproveSong")]
-        public async Task<ActionResult<JObject>> ApproveSong([FromQuery]string songId)
+        [HttpPut("UpdateSong")]
+        public async Task<ActionResult<JObject>> UpdateMusic([FromBody]Song update)
         {
             JObject returnObject;
             Song selectedSong = null;
 
             try
             {
-                selectedSong = await _songService.GetSong(songId);
+                selectedSong = await _songService.GetSong(update.Id);
 
                 if (selectedSong == null)
                 {
-                    libraryLog.LogError("APPROVE SONG REQUEST ERROR: Song not found");
+                    libraryLog.LogError("UPDATE SONG ERROR: Song not found");
                     string errorMessage = "Song not found";
                     returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
                     return BadRequest(returnObject);
@@ -295,37 +246,60 @@ namespace MSPublicLibrary.Controllers
                 else
                 {
                     Song proxySong = null;
-
-                    if(selectedSong.StatusId.Equals(APPROVED))
-                    {
-                        libraryLog.LogError("APPROVE SONG REQUEST ERROR: Song Request already approved");
-                        string errorMessage = "ERROR: This song has already been approved.";
-                        returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
-                        return BadRequest(returnObject);
-                    }
-                    else
-                    {
-                        if(selectedSong.StatusId.Equals(REJECTED))
-                        {
-                            libraryLog.LogError("APPROVE SONG REQUEST ERROR: Rejected Song cannot be approved");
-                            string errorMessage = "ERROR: This song has  been rejected and cannot be approved.";
-                            returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
-                            return BadRequest(returnObject);
-                        }
-                        else
-                        {
-                            selectedSong.StatusId = APPROVED;
-                            proxySong = await _songService.UpdateSong(selectedSong);
-                            libraryLog.LogInformation("APPROVE SONG REQUEST SUCCESSFUL: {0}", proxySong.Title);
-                            returnObject = JSONFormatter.SuccessMessageFormatter("Song approved successfully", proxySong);
-                            return Ok(returnObject);
-                        }
-                    }         
+                    proxySong = await _songService.UpdateSong(update);
+                    libraryLog.LogInformation("UPDATE SONG SUCCESSFUL: {0}", proxySong.Title);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Song updated successfully", proxySong);
+                    return Ok(returnObject);
                 }
             }
             catch (Exception ex)
             {
-                libraryLog.LogError("REJECT SONG REQUEST EXCEPTION:\n" + ex.Message);
+                libraryLog.LogError("UPDATE SONG EXCEPTION:\n" + ex.Message);
+                returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                return BadRequest(returnObject);
+            }
+        }
+
+        [HttpPut("DeleteSong")]
+        public async Task<ActionResult<JObject>> DeleteSong([FromQuery]string id)
+        {
+            JObject returnObject;
+            Song selectedSong = null;
+
+            try
+            {
+                selectedSong = await _songService.GetSong(id);
+
+                if (selectedSong == null)
+                {
+                    libraryLog.LogError("DELETE SONG ERROR: Song not found");
+                    string errorMessage = "Song not found";
+                    returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                    return BadRequest(returnObject);
+                }
+                else
+                {
+                    bool isDeleted = false;
+                    isDeleted = await _songService.DeleteSong(id);
+
+                    if(isDeleted)
+                    {
+                        libraryLog.LogInformation("DELETE SONG SUCCESSFUL: {0}", selectedSong.Title);
+                        returnObject = JSONFormatter.SuccessMessageFormatter("SONG deleted successfully", selectedSong);
+                        return Ok(returnObject);
+                    }
+                    else
+                    {
+                        libraryLog.LogError("DELETE SONG ERROR: Could not delete song");
+                        string errorMessage = "Could not delete song due to a connection error.";
+                        returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                        return BadRequest(returnObject);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                libraryLog.LogError("DELETE SONG EXCEPTION:\n" + ex.Message);
                 returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
                 return BadRequest(returnObject);
             }

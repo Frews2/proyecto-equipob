@@ -3,43 +3,28 @@
  Author(s): Ricardo Moguel Sanchez
 */
 using System;
-using MSPublicLibrary.Models;
+using MSPrivateLibrary.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MSPublicLibrary.Services
+namespace MSPrivateLibrary.Services
 {
     public class SongService
     {
         private readonly IMongoCollection<Song> song;
-        private const string APPROVED = "1";
-        private const string REJECTED = "2";
-        private const string PENDING = "3";
 
-        public SongService(IPublicLibraryDatabaseSettings settings)
+        public SongService(IPrivateLibraryDatabaseSettings settings)
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             var database = client.GetDatabase(settings.DatabaseName);
             song = database.GetCollection<Song>(settings.SongCollectionName);
         }
 
-        public async Task<List<Song>> ShowApprovedSongs()
+        public async Task<List<Song>> ShowSongs()
         {
-            List<Song> songs = await song.Find(s=> s.StatusId.Equals(APPROVED)).ToListAsync();
-            return songs;
-        }
-
-        public async Task<List<Song>> ShowSongRequests()
-        {
-            List<Song> songs = await song.Find(s=> s.StatusId.Equals(PENDING)).ToListAsync();
-            return songs;
-        }
-
-        public async Task<List<Song>> ShowSongRejects()
-        {
-            List<Song> songs = await song.Find(s=> s.StatusId.Equals(REJECTED)).ToListAsync();
+            List<Song> songs = await song.Find(p => true).ToListAsync();
             return songs;
         }
 
@@ -79,7 +64,7 @@ namespace MSPublicLibrary.Services
             return query;
         }
 
-        public async Task<Song> AddNewSongPetition(Song newSong)
+        public async Task<Song> AddNewSong(Song newSong)
         {
             await song.InsertOneAsync(newSong);
             return newSong;
@@ -87,8 +72,14 @@ namespace MSPublicLibrary.Services
 
         public async Task<Song> UpdateSong(Song update)
         {
-            await song.ReplaceOneAsync(approved => approved.Id == update.Id, update);
+            await song.ReplaceOneAsync(song => song.Id.Equals(update.Id), update);
             return update;
+        }
+
+        public async Task<bool> DeleteSong(string id)
+        {
+            await song.DeleteOneAsync(song => song.Id.Equals(id));
+            return true;
         }
     }
 }

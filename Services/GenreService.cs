@@ -3,18 +3,18 @@
  Author(s): Ricardo Moguel Sanchez
 */
 using System;
-using MSPublicLibrary.Models;
+using MSPrivateLibrary.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MSPublicLibrary.Services
+namespace MSPrivateLibrary.Services
 {
     public class GenreService
     {
         private readonly IMongoCollection<Genre> genre;
 
-        public GenreService(IPublicLibraryDatabaseSettings settings)
+        public GenreService(IPrivateLibraryDatabaseSettings settings)
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             var database = client.GetDatabase(settings.DatabaseName);
@@ -50,6 +50,18 @@ namespace MSPublicLibrary.Services
         {
             await genre.InsertOneAsync(newGenre);
             return newGenre;
+        }
+
+        public async Task<Genre> UpdateGenre(Genre update)
+        {
+            await genre.ReplaceOneAsync(query => query.Id.Equals(update.Id), update);
+            return update;
+        }
+
+        public async Task<bool> DeleteGenre(string id)
+        {
+            await genre.DeleteOneAsync(query => query.Id.Equals(id));
+            return true;
         }
     }
 }

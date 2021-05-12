@@ -1,8 +1,8 @@
 using System;
 
-namespace MSPublicLibrary.Models
+namespace MSPrivateLibrary.Models
 {
-    public class PublicLibraryDatabaseSettings : IPublicLibraryDatabaseSettings
+    public class PrivateLibraryDatabaseSettings : IPrivateLibraryDatabaseSettings
     {
         public string ConnectionString { get; set; } = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
         public string MusicCollectionName { get; set; }
@@ -13,7 +13,7 @@ namespace MSPublicLibrary.Models
         public string DatabaseName { get; set; }
     }
 
-    public interface IPublicLibraryDatabaseSettings
+    public interface IPrivateLibraryDatabaseSettings
     {
         string MusicCollectionName { get; set; }
         string SongCollectionName { get; set; }

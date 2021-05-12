@@ -12,10 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Options;
-using MSPublicLibrary.Models;
-using MSPublicLibrary.Services;
+using MSPrivateLibrary.Models;
+using MSPrivateLibrary.Services;
 
-namespace MSPublicLibrary
+namespace MSPrivateLibrary
 {
     public class Startup
     {
@@ -29,20 +29,19 @@ namespace MSPublicLibrary
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<PublicLibraryDatabaseSettings>(
-            Configuration.GetSection(nameof(PublicLibraryDatabaseSettings)));
+            services.Configure<PrivateLibraryDatabaseSettings>(
+            Configuration.GetSection(nameof(PrivateLibraryDatabaseSettings)));
 
-            services.AddSingleton<IPublicLibraryDatabaseSettings>(sp =>
-            sp.GetRequiredService<IOptions<PublicLibraryDatabaseSettings>>().Value);
+            services.AddSingleton<IPrivateLibraryDatabaseSettings>(sp =>
+            sp.GetRequiredService<IOptions<PrivateLibraryDatabaseSettings>>().Value);
             services.AddSingleton<MusicService>();
             services.AddSingleton<AlbumService>();
             services.AddSingleton<SongService>();
             services.AddSingleton<GenreService>();
-            services.AddSingleton<SongStatusService>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MSPublicLibrary", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MSPrivateLibrary", Version = "v1" });
             });
         }
 
@@ -53,7 +52,7 @@ namespace MSPublicLibrary
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MSPublicLibrary v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MSPrivateLibrary v1"));
             }
 
             app.UseHttpsRedirection();

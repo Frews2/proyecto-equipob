@@ -3,19 +3,19 @@
  Author(s): Ricardo Moguel Sanchez
 */
 using System;
-using MSPublicLibrary.Models;
+using MSPrivateLibrary.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MSPublicLibrary.Services
+namespace MSPrivateLibrary.Services
 {
     public class MusicService
     {
         private readonly IMongoCollection<Music> music;
 
-        public MusicService(IPublicLibraryDatabaseSettings settings)
+        public MusicService(IPrivateLibraryDatabaseSettings settings)
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             var database = client.GetDatabase(settings.DatabaseName);
@@ -51,6 +51,18 @@ namespace MSPublicLibrary.Services
         {
             await music.InsertOneAsync(newMusic);
             return newMusic;
+        }
+
+        public async Task<Music> UpdateMusic(Music update)
+        {
+            await music.ReplaceOneAsync(query => query.Id.Equals(update.Id), update);
+            return update;
+        }
+
+        public async Task<bool> DeleteMusic(string id)
+        {
+            await music.DeleteOneAsync(query => query.Id.Equals(id));
+            return true;
         }
     }
 }

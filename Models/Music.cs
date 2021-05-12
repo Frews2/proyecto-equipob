@@ -6,7 +6,7 @@ using System;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MSPublicLibrary.Models{
+namespace MSPrivateLibrary.Models{
     public class Music
     {
         [BsonId]

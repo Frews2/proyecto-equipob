@@ -3,18 +3,18 @@
  Author(s): Ricardo Moguel Sanchez
 */
 using System;
-using MSPublicLibrary.Models;
+using MSPrivateLibrary.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MSPublicLibrary.Services
+namespace MSPrivateLibrary.Services
 {
     public class AlbumService
     {
         private readonly IMongoCollection<Album> album;
 
-        public AlbumService(IPublicLibraryDatabaseSettings settings)
+        public AlbumService(IPrivateLibraryDatabaseSettings settings)
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"));
             var database = client.GetDatabase(settings.DatabaseName);
@@ -50,6 +50,18 @@ namespace MSPublicLibrary.Services
         {
             await album.InsertOneAsync(newAlbum);
             return newAlbum;
+        }
+
+        public async Task<Album> UpdateAlbum(Album update)
+        {
+            await album.ReplaceOneAsync(query => query.Id.Equals(update.Id), update);
+            return update;
+        }
+
+        public async Task<bool> DeleteAlbum(string id)
+        {
+            await album.DeleteOneAsync(query => query.Id.Equals(id));
+            return true;
         }
     }
 }

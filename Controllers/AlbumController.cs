@@ -8,14 +8,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MSPublicLibrary.Models;
-using MSPublicLibrary.Services;
+using MSPrivateLibrary.Models;
+using MSPrivateLibrary.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using MongoDB.Driver;
-using MSPublicLibrary.Utilities;
+using MSPrivateLibrary.Utilities;
 
-namespace MSPublicLibrary.Controllers
+namespace MSPrivateLibrary.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -112,6 +112,85 @@ namespace MSPublicLibrary.Controllers
                     returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
                     return BadRequest(returnObject);
                 }
+            }
+        }
+
+        [HttpPut("UpdateAlbum")]
+        public async Task<ActionResult<JObject>> UpdateAlbum([FromBody]Album update)
+        {
+            JObject returnObject;
+            Album selectedAlbum = null;
+
+            try
+            {
+                selectedAlbum = await _albumService.GetAlbum(update.Id);
+
+                if (selectedAlbum == null)
+                {
+                    libraryLog.LogError("UPDATE ALBUM ERROR: Album not found");
+                    string errorMessage = "Album not found";
+                    returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                    return BadRequest(returnObject);
+                }
+                else
+                {
+                    Album proxyAlbum = null;
+                    proxyAlbum = await _albumService.UpdateAlbum(update);
+                    libraryLog.LogInformation("UPDATE ALBUM SUCCESSFUL: {0}", proxyAlbum.Name);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Album approved successfully", proxyAlbum);
+                    return Ok(returnObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                libraryLog.LogError("UPDATE ALBUM EXCEPTION:\n" + ex.Message);
+                returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                return BadRequest(returnObject);
+            }
+        }
+
+        [HttpPut("DeleteAlbum")]
+        public async Task<ActionResult<JObject>> DeleteAlbum([FromQuery]string id)
+        {
+            JObject returnObject;
+            Album selectedAlbum = null;
+
+            try
+            {
+                selectedAlbum = await _albumService.GetAlbum(id);
+
+                if (selectedAlbum == null)
+                {
+                    libraryLog.LogError("DELETE ALBUM ERROR: Album not found");
+                    string errorMessage = "Album not found";
+                    returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                    return BadRequest(returnObject);
+                }
+                else
+                {
+                    bool isDeleted = false;
+                    isDeleted = await _albumService.DeleteAlbum(id);
+
+                    if(isDeleted)
+                    {
+                        libraryLog.LogInformation("DELETE ALBUM SUCCESSFUL: {0}", selectedAlbum.Name);
+                        returnObject = JSONFormatter.SuccessMessageFormatter("Album deleted successfully", selectedAlbum);
+                        return Ok(returnObject);
+                    }
+                    else
+                    {
+                        libraryLog.LogError("DELETE ALBUM ERROR: Could not delete album");
+                        string errorMessage = "Could not delete album due to a connection error.";
+                        returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                        return BadRequest(returnObject);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                libraryLog.LogError("DELETE ALBUM EXCEPTION:\n" + ex.Message);
+                returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                return BadRequest(returnObject);
             }
         }
     }

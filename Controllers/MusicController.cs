@@ -8,21 +8,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MSPublicLibrary.Models;
-using MSPublicLibrary.Services;
+using MSPrivateLibrary.Models;
+using MSPrivateLibrary.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using MongoDB.Driver;
-using MSPublicLibrary.Utilities;
+using MSPrivateLibrary.Utilities;
 
-namespace MSPublicLibrary.Controllers
+namespace MSPrivateLibrary.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class MusicController : ControllerBase
     {
         private readonly MusicService _musicService;
-        private IMongoCollection<Music> music;
         private readonly ILogger<MusicController> libraryLog;
 
         public MusicController(ILogger<MusicController> logger, MusicService musicService)
@@ -112,6 +111,85 @@ namespace MSPublicLibrary.Controllers
                     returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
                     return BadRequest(returnObject);
                 }
+            }
+        }
+
+        [HttpPut("UpdateMusic")]
+        public async Task<ActionResult<JObject>> UpdateMusic([FromBody]Music update)
+        {
+            JObject returnObject;
+            Music selectedMusic = null;
+
+            try
+            {
+                selectedMusic = await _musicService.GetMusic(update.Id);
+
+                if (selectedMusic == null)
+                {
+                    libraryLog.LogError("UPDATE MUSIC ERROR: Music not found");
+                    string errorMessage = "Music not found";
+                    returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                    return BadRequest(returnObject);
+                }
+                else
+                {
+                    Music proxyMusic = null;
+                    proxyMusic = await _musicService.UpdateMusic(update);
+                    libraryLog.LogInformation("UPDATE MUSIC SUCCESSFUL: {0}", proxyMusic.Name);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Music updated successfully", proxyMusic);
+                    return Ok(returnObject);
+                }
+            }
+            catch (Exception ex)
+            {
+                libraryLog.LogError("UPDATE MUSIC EXCEPTION:\n" + ex.Message);
+                returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                return BadRequest(returnObject);
+            }
+        }
+
+        [HttpPut("DeleteMusic")]
+        public async Task<ActionResult<JObject>> DeleteMusic([FromQuery]string id)
+        {
+            JObject returnObject;
+            Music selectedMusic = null;
+
+            try
+            {
+                selectedMusic = await _musicService.GetMusic(id);
+
+                if (selectedMusic == null)
+                {
+                    libraryLog.LogError("DELETE MUSIC ERROR: Music not found");
+                    string errorMessage = "Music not found";
+                    returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                    return BadRequest(returnObject);
+                }
+                else
+                {
+                    bool isDeleted = false;
+                    isDeleted = await _musicService.DeleteMusic(id);
+
+                    if(isDeleted)
+                    {
+                        libraryLog.LogInformation("DELETE MUSIC SUCCESSFUL: {0}", selectedMusic.Name);
+                        returnObject = JSONFormatter.SuccessMessageFormatter("Music deleted successfully", selectedMusic);
+                        return Ok(returnObject);
+                    }
+                    else
+                    {
+                        libraryLog.LogError("DELETE MUSIC ERROR: Could not delete music");
+                        string errorMessage = "Could not delete music due to a connection error.";
+                        returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                        return BadRequest(returnObject);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                libraryLog.LogError("DELETE MUSIC EXCEPTION:\n" + ex.Message);
+                returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                return BadRequest(returnObject);
             }
         }
     }
