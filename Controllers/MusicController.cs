@@ -22,7 +22,6 @@ namespace MSPublicLibrary.Controllers
     public class MusicController : ControllerBase
     {
         private readonly MusicService _musicService;
-        private IMongoCollection<Music> music;
         private readonly ILogger<MusicController> libraryLog;
 
         public MusicController(ILogger<MusicController> logger, MusicService musicService)
