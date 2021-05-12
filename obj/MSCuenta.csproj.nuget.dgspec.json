@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {}
+    "c:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {}
   },
   "projects": {
-    "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {
+    "c:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
+        "projectUniqueName": "c:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
         "projectName": "MSCuenta",
-        "projectPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
+        "projectPath": "c:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\MSCuenta.csproj",
         "packagesPath": "C:\\Users\\parke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\obj\\",
+        "outputPath": "c:\\Users\\parke\\Desktop\\SPP\\SpotyMe\\MSAccount\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
