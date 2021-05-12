@@ -135,7 +135,11 @@ namespace MSPrivateLibrary.Controllers
                 else
                 {
                     Album proxyAlbum = null;
-                    proxyAlbum = await _albumService.UpdateAlbum(update);
+                    selectedAlbum.Name = update.Name;
+                    selectedAlbum.ImageAddress = update.ImageAddress;
+                    selectedAlbum.ImageName = update.ImageName;
+                    selectedAlbum.ImageType = update.ImageType;
+                    proxyAlbum = await _albumService.UpdateAlbum(selectedAlbum);
                     libraryLog.LogInformation("UPDATE ALBUM SUCCESSFUL: {0}", proxyAlbum.Name);
                     returnObject = JSONFormatter.SuccessMessageFormatter("Album approved successfully", proxyAlbum);
                     return Ok(returnObject);
@@ -149,7 +153,7 @@ namespace MSPrivateLibrary.Controllers
             }
         }
 
-        [HttpPut("DeleteAlbum")]
+        [HttpDelete("DeleteAlbum")]
         public async Task<ActionResult<JObject>> DeleteAlbum([FromQuery]string id)
         {
             JObject returnObject;

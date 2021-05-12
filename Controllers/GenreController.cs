@@ -137,7 +137,8 @@ namespace MSPrivateLibrary.Controllers
                 else
                 {
                     Genre proxyGenre = null;
-                    proxyGenre = await _genreService.UpdateGenre(update);
+                    selectedGenre.Name = update.Name;
+                    proxyGenre = await _genreService.UpdateGenre(selectedGenre);
                     libraryLog.LogInformation("UPDATE GENRE SUCCESSFUL: {0}", proxyGenre.Name);
                     returnObject = JSONFormatter.SuccessMessageFormatter("Genre updated successfully", proxyGenre);
                     return Ok(returnObject);
@@ -151,7 +152,7 @@ namespace MSPrivateLibrary.Controllers
             }
         }
 
-        [HttpPut("DeleteGenre")]
+        [HttpDelete("DeleteGenre")]
         public async Task<ActionResult<JObject>> DeleteGenre([FromQuery]string id)
         {
             JObject returnObject;

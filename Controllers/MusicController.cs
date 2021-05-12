@@ -134,7 +134,11 @@ namespace MSPrivateLibrary.Controllers
                 else
                 {
                     Music proxyMusic = null;
-                    proxyMusic = await _musicService.UpdateMusic(update);
+                    selectedMusic.Name = update.Name;
+                    selectedMusic.FileType = update.FileType;
+                    selectedMusic.Address = update.Address;
+                    selectedMusic.Size = update.Size;
+                    proxyMusic = await _musicService.UpdateMusic(selectedMusic);
                     libraryLog.LogInformation("UPDATE MUSIC SUCCESSFUL: {0}", proxyMusic.Name);
                     returnObject = JSONFormatter.SuccessMessageFormatter("Music updated successfully", proxyMusic);
                     return Ok(returnObject);
@@ -148,7 +152,7 @@ namespace MSPrivateLibrary.Controllers
             }
         }
 
-        [HttpPut("DeleteMusic")]
+        [HttpDelete("DeleteMusic")]
         public async Task<ActionResult<JObject>> DeleteMusic([FromQuery]string id)
         {
             JObject returnObject;

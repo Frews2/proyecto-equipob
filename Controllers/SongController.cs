@@ -246,7 +246,15 @@ namespace MSPrivateLibrary.Controllers
                 else
                 {
                     Song proxySong = null;
-                    proxySong = await _songService.UpdateSong(update);
+                    selectedSong.Title = update.Title;
+                    selectedSong.ArtistId = update.ArtistId;
+                    selectedSong.Composer = update.Composer;
+                    selectedSong.Producer = update.Producer;
+                    selectedSong.Duration = update.Duration;
+                    selectedSong.ReleaseYear = update.ReleaseYear;
+                    selectedSong.AlbumId = update.AlbumId;
+                    selectedSong.GenreId = update.GenreId;
+                    proxySong = await _songService.UpdateSong(selectedSong);
                     libraryLog.LogInformation("UPDATE SONG SUCCESSFUL: {0}", proxySong.Title);
                     returnObject = JSONFormatter.SuccessMessageFormatter("Song updated successfully", proxySong);
                     return Ok(returnObject);
@@ -260,7 +268,7 @@ namespace MSPrivateLibrary.Controllers
             }
         }
 
-        [HttpPut("DeleteSong")]
+        [HttpDelete("DeleteSong")]
         public async Task<ActionResult<JObject>> DeleteSong([FromQuery]string id)
         {
             JObject returnObject;
