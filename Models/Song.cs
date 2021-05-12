@@ -13,6 +13,7 @@ namespace MSPublicLibrary.Models{
         public string ObjectId { get; set; }
         public string Id { get; set; }
         public string Title { get; set; }
+        public string UploaderId { get; set; }
         public string ArtistId { get; set; }
         public string MultimediaId { get; set; }
         public string Composer { get; set; }
@@ -21,6 +22,7 @@ namespace MSPublicLibrary.Models{
         public string ReleaseYear { get; set; }
         public string AlbumId { get; set; }
         public string GenreId { get; set; }
+        public string StatusId { get; set; }
 
     }
 }

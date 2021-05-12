@@ -53,7 +53,7 @@ namespace MSPublicLibrary.Controllers
                 }
             }
 
-            if (genres == null)
+            if (genres.Count < 1)
             {
                 string errorMessage  = "No genre was found";
                 returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
@@ -67,10 +67,14 @@ namespace MSPublicLibrary.Controllers
         [HttpPost("UploadGenre")]
         public async Task<ActionResult<Genre>> UploadGenre([FromBody] Genre newGenre)
         {
+            JObject returnObject;
+
             if (newGenre == null)
             {
                 libraryLog.LogError("REGISTER GENRE ERROR: Fields cannot be empty");
-                return BadRequest("The fields for the new genre are empty. Please fill all fields and try again");
+                string errorMessage = "The fields for the new genre are empty. Please fill all fields and try again";
+                returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                return BadRequest(returnObject);
             }
             else
             {
@@ -101,12 +105,14 @@ namespace MSPublicLibrary.Controllers
                     newGenre.Id = counter.ToString();
                     proxyGenre = await _genreService.AddNewGenre(newGenre);
                     libraryLog.LogInformation("REGISTER GENTRE SUCCESSFUL: {0}", proxyGenre.Name);
-                    return Created("", proxyGenre);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Genre registered successfully", proxyGenre);
+                    return Ok(returnObject);
                 }
                 catch (Exception ex)
                 {
-                    libraryLog.LogError("REGISTER EXCEPTION:\n" + ex.Message);
-                    return BadRequest(ex);
+                    libraryLog.LogError("REGISTER GENRE EXCEPTION:\n" + ex.Message);
+                    returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                    return BadRequest(returnObject);
                 }
             }
         }

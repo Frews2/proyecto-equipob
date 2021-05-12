@@ -38,6 +38,7 @@ namespace MSPublicLibrary
             services.AddSingleton<AlbumService>();
             services.AddSingleton<SongService>();
             services.AddSingleton<GenreService>();
+            services.AddSingleton<SongStatusService>();
             services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {

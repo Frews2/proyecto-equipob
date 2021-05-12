@@ -53,7 +53,7 @@ namespace MSPublicLibrary.Controllers
                 }
             }
 
-            if (music == null)
+            if (music.Count < 1)
             {
                 string errorMessage  = "No music was found";
                 returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
@@ -67,10 +67,14 @@ namespace MSPublicLibrary.Controllers
         [HttpPost("UploadMusic")]
         public async Task<ActionResult<Music>> UploadMusic([FromBody] Music newMusic)
         {
+            JObject returnObject;
+
             if (newMusic == null)
             {
                 libraryLog.LogError("REGISTER MUSIC ERROR: Fields cannot be empty");
-                return BadRequest("The fields for the new music are empty. Please fill all fields and try again");
+                string errorMessage = "The fields for the new music are empty. Please fill all fields and try again";
+                returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                return BadRequest(returnObject);
             }
             else
             {
@@ -98,13 +102,15 @@ namespace MSPublicLibrary.Controllers
                     } while (isIdDuplicate);
 
                     proxyMusic = await _musicService.AddNewMusic(newMusic);
-                    libraryLog.LogInformation("REGISTER ALBUM SUCCESSFUL: {0}", proxyMusic.Name);
-                    return Created("", proxyMusic);
+                    libraryLog.LogInformation("REGISTER MUSIC SUCCESSFUL: {0}", proxyMusic.Name);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Music registered successfully", proxyMusic);
+                    return Ok(returnObject);
                 }
                 catch (Exception ex)
                 {
-                    libraryLog.LogError("REGISTER EXCEPTION:\n" + ex.Message);
-                    return BadRequest(ex);
+                    libraryLog.LogError("REGISTER MUSIC EXCEPTION:\n" + ex.Message);
+                    returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                    return BadRequest(returnObject);
                 }
             }
         }

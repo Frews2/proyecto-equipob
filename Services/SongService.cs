@@ -14,6 +14,9 @@ namespace MSPublicLibrary.Services
     public class SongService
     {
         private readonly IMongoCollection<Song> song;
+        private const string APPROVED = "1";
+        private const string REJECTED = "2";
+        private const string PENDING = "3";
 
         public SongService(IPublicLibraryDatabaseSettings settings)
         {
@@ -22,9 +25,21 @@ namespace MSPublicLibrary.Services
             song = database.GetCollection<Song>(settings.SongCollectionName);
         }
 
-        public async Task<List<Song>> ShowSongs()
+        public async Task<List<Song>> ShowApprovedSongs()
         {
-            List<Song> songs = await song.Find(p => true).ToListAsync();
+            List<Song> songs = await song.Find(s=> s.StatusId.Equals(APPROVED)).ToListAsync();
+            return songs;
+        }
+
+        public async Task<List<Song>> ShowSongRequests()
+        {
+            List<Song> songs = await song.Find(s=> s.StatusId.Equals(PENDING)).ToListAsync();
+            return songs;
+        }
+
+        public async Task<List<Song>> ShowSongRejects()
+        {
+            List<Song> songs = await song.Find(s=> s.StatusId.Equals(REJECTED)).ToListAsync();
             return songs;
         }
 
@@ -64,10 +79,16 @@ namespace MSPublicLibrary.Services
             return query;
         }
 
-        public async Task<Song> AddNewSong(Song newSong)
+        public async Task<Song> AddNewSongPetition(Song newSong)
         {
             await song.InsertOneAsync(newSong);
             return newSong;
+        }
+
+        public async Task<Song> UpdateSong(Song update)
+        {
+            await song.ReplaceOneAsync(approved => approved.Id == update.Id, update);
+            return update;
         }
     }
 }

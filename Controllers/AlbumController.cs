@@ -53,7 +53,7 @@ namespace MSPublicLibrary.Controllers
                 }
             }
 
-            if (albums == null)
+            if (albums.Count < 1)
             {
                 string errorMessage  = "No album was found";
                 returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
@@ -67,10 +67,14 @@ namespace MSPublicLibrary.Controllers
         [HttpPost("UploadAlbum")]
         public async Task<ActionResult<Album>> UploadAlbum([FromBody] Album newAlbum)
         {
+            JObject returnObject;
+
             if (newAlbum == null)
             {
                 libraryLog.LogError("REGISTER ALBUM ERROR: Fields cannot be empty");
-                return BadRequest("The fields for the new album are empty. Please fill all fields and try again");
+                string errorMessage = "The fields for the new album are empty. Please fill all fields and try again";
+                returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
+                return BadRequest(returnObject);
             }
             else
             {
@@ -99,12 +103,14 @@ namespace MSPublicLibrary.Controllers
 
                     proxyAlbum = await _albumService.AddNewAlbum(newAlbum);
                     libraryLog.LogInformation("REGISTER ALBUM SUCCESSFUL: {0}", proxyAlbum.Name);
-                    return Created("", proxyAlbum);
+                    returnObject = JSONFormatter.SuccessMessageFormatter("Album registered successfully", proxyAlbum);
+                    return Ok(returnObject);
                 }
                 catch (Exception ex)
                 {
-                    libraryLog.LogError("REGISTER EXCEPTION:\n" + ex.Message);
-                    return BadRequest(ex);
+                    libraryLog.LogError("ALBUM REGISTER EXCEPTION:\n" + ex.Message);
+                    returnObject = JSONFormatter.ErrorMessageFormatter(ex.Message);
+                    return BadRequest(returnObject);
                 }
             }
         }

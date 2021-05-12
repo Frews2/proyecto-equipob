@@ -9,6 +9,7 @@ namespace MSPublicLibrary.Models
         public string SongCollectionName { get; set; }
         public string AlbumCollectionName { get; set; }
         public string GenreCollectionName { get; set; }
+        public string SongStatusCollectionName { get; set; }
         public string DatabaseName { get; set; }
     }
 
@@ -18,6 +19,7 @@ namespace MSPublicLibrary.Models
         string SongCollectionName { get; set; }
         string AlbumCollectionName { get; set; }
         string GenreCollectionName { get; set; }
+        string SongStatusCollectionName { get; set; }
         string DatabaseName { get; set; }
     }
 }
