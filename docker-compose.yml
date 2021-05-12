@@ -67,6 +67,18 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "mongodb://spotymeAdmin:proyectoredes@mongo_public_library"
+    # Servicio de biblioteca privada
+    ms_private_library:
+        image: ms_private_library_spotyme
+        depends_on: 
+            - "mongo_private_library"
+        ports:
+            - "8082:80"
+        build: 
+            context: ../MSPrivateLibrary/
+            dockerfile: Dockerfile
+        environment: 
+            DB_CONNECTION_STRING: "mongodb://spotymeAdmin:proyectoredes@mongo_private_library"
 volumes:
     db_volume_Accounts:
     db_volume_public_library:
