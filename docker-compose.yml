@@ -79,6 +79,17 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "mongodb://spotymeAdmin:proyectoredes@mongo_private_library"
+    # Servicio de Audio
+    ms_streaming:
+        image: ms_streaming_spotyme
+        depends_on: 
+            - "ms_public_library"
+            - "ms_private_library"
+        ports:
+            - "8083:8083"
+        build: 
+            context: ../MSStreaming/
+            dockerfile: Dockerfile
 volumes:
     db_volume_Accounts:
     db_volume_public_library:
