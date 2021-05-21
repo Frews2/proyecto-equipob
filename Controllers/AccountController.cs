@@ -57,8 +57,8 @@ namespace MSCuenta.Controllers
             }
         }
 
-        [HttpGet("UserLogin")]
-        public async Task<ActionResult<JObject>> UserLogin([FromQuery]string username = "", [FromQuery] string password = "")
+        [HttpPost("UserLogin")]
+        public async Task<ActionResult<JObject>> UserLogin([FromBody]LogAccount logAccount)
         {
             JObject returnObject;
             Account userAccount = null;
@@ -66,7 +66,7 @@ namespace MSCuenta.Controllers
             try
             {
                 userAccount = await account_dbContext.Accounts
-                .Where(account => account.Username.Contains(username)).FirstOrDefaultAsync();
+                .Where(account => account.Email.Contains(logAccount.Username)).FirstOrDefaultAsync();
 
                 if (userAccount != null)
                 {
@@ -79,9 +79,11 @@ namespace MSCuenta.Controllers
                     else
                     {
                         userPassword = await account_dbContext.Passwords
-                        .Where(p => p.PasswordString.Contains(password)).FirstOrDefaultAsync();
-
-                        if(userPassword.PasswordString.Contains(password) && userPassword.OwnerId.Equals(userAccount.AccountId))
+                        .Where(p => p.PasswordString.Contains(logAccount.PasswordString))
+                        .Where(p => p.OwnerId.Contains(userAccount.AccountId))
+                        .FirstOrDefaultAsync();
+                        
+                        if(userPassword != null)
                         {
                             
                             returnObject = JSONFormatter.SuccessMessageFormatter("Login successful", userAccount);
