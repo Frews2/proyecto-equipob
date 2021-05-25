@@ -15,10 +15,8 @@ router.get("/getAccount", async (req, res) => {
     })
 })
 
-router.get("/login", async (req, res) => {
-    const { username, password } = req.query;
-
-    microservicioAccount.Login(username, password)
+router.post("/login", async (req, res) => {
+    microservicioAccount.Login(req.body)
     .then(values => {
         res.send(values);
     })
@@ -38,7 +36,7 @@ router.post("/registerNewAccount", async(req, res) =>{
 })
 
 router.put("/updateAccount", async(req, res) =>{
-    microservicioAccount.UpdateAccount(newAccount)
+    microservicioAccount.UpdateAccount(req.body)
     .then(values => {
         res.send(values);
     })
@@ -55,6 +53,17 @@ router.put("/banAccount", async(req, res) =>{
     })
     .catch(error => {
         res.send("Account/banAccount",error);
+    })
+})
+
+
+router.put("/updatePassword", async(req, res) =>{
+    microservicioAccount.UpdatePassword(req.body)
+    .then(values => {
+        res.send(values);
+    })
+    .catch(error => {
+        res.send("Password/updatePassword",error);
     })
 })
 

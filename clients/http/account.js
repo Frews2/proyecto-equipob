@@ -1,17 +1,17 @@
 import axios from 'axios';
 
+const urlMS = process.env.MS_ACCOUNT_CONST;
 class MicroservicioAccount
 {
-    
     async RegisterNewAccount(newAccount){
-        let url = "http://localhost:8080/Account/RegisterAccount";
+        let url = urlMS + "/Account/RegisterAccount";
         return axios.post(url, newAccount)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
     }
 
     async GetAccount(username, id){
-        let url = "http://localhost:8080/Account/SearchAccount";
+        let url =  urlMS + "/Account/SearchAccount";
         return axios.get(url, {
             params: {
                 username: username,
@@ -22,27 +22,24 @@ class MicroservicioAccount
         .catch(error => {return error.response.data})
     }
 
-    async Login(username, password){
-        let url = "http://localhost:8080/Account/UserLogin";
-        return axios.get(url, {
-            params: {
-                username: username,
-                password: password
-            }
-        })
+    async Login(logAccount){
+        let url =  urlMS + "/Account/UserLogin";
+        console.log(logAccount);
+        console.log(url);
+        return axios.post(url,logAccount)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
     }
 
-    async UpdateAccount(newAccount){
-        let url = "http://localhost:8080/Account/UpdateAccount";
-        return axios.put(url, newAccount)
+    async UpdateAccount(account){
+        let url =  urlMS + "/Account/UpdateAccount";
+        return axios.put(url, account)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
-     }
+    }
 
-     async BanAccount(accountId){
-        let url = "http://localhost:8080/Account/BanAccount";
+    async BanAccount(accountId){
+        let url =  urlMS + "/Account/BanAccount";
         return axios.put(url, {
             params:{
                 accountId : accountId
@@ -50,7 +47,14 @@ class MicroservicioAccount
         })
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
-     }
+    }
+
+    async UpdatePassword(password){
+        let url =  urlMS + "/Password/UpdatePassword";
+        return axios.put(url, password)
+        .then(response => {return response.data})
+        .catch(error => {return error.response.data})
+    }
 
 }
 
