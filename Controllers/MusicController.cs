@@ -30,7 +30,7 @@ namespace MSPublicLibrary.Controllers
             _musicService = musicService;
         }
 
-        [HttpGet("SearchMusic")]
+        [HttpPost("SearchMusic")]
         public async Task<ActionResult<JObject>> SearchMusic([FromQuery]string address = "", [FromQuery] string id = "")
         {
             JObject returnObject;
