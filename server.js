@@ -8,6 +8,8 @@ import audioRouter from "./routes/streaming.js";
 const app = express();
 const PORT = 8083;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/audio", audioRouter);
 
 app.all("*", (req, res) => res.status(400).json({
