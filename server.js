@@ -4,12 +4,13 @@
 */
 import express from "express";
 import audioRouter from "./routes/streaming.js";
-
+import fileupload from "express-fileupload";
 const app = express();
 const PORT = 8083;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileupload());
 app.use("/audio", audioRouter);
 
 app.all("*", (req, res) => res.status(400).json({
@@ -20,8 +21,3 @@ app.all("*", (req, res) => res.status(400).json({
     result: null} }));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
-import http from 'http';
-
-

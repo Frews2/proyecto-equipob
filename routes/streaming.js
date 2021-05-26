@@ -6,7 +6,6 @@ const router = express.Router();
 router.get("/Streaming", async (req, res) => {
     try{
         const {address} = req.query;
-        console.log("directorio de canción a reproducir: ", address);
 
         var filePath = address;
         var stat = fileSystem.statSync(filePath);
@@ -30,31 +29,30 @@ router.get("/Streaming", async (req, res) => {
 });
 
 router.post("/Save", async (req, res) => {
+    
     try{
-        const {address} = req.query;
-        var bytes = req.body;
+        const {album} = req.query;
+        const {archivo} = req.files;
+
+        var folderPath = process.cwd() + "/spotyme/" + album + "/";
+        var filePath = folderPath + archivo.name;
         
-        var filePath = address;
-        fileSystem.mkdir(filePath, null, function(err){
+        let arregloBytes = archivo;
+       
+        fileSystem.mkdir(folderPath, null, function(err){
             if(err){
-                console.error("Error en Save", error);
-                return res.status(400).json({
-                success: false,
-                origin: "audio_streaming_service",
-                data: {
-                message: "Could not save audio",
-                result: null} }); 
-            } else console.log("Canción guardada en directorio: ", address);
+                console.log('ERROR: ' + err);
+            };
         })
 
-        fileSystem.writeFile(address, bytes, function(err)
+        fileSystem.writeFile(filePath, arregloBytes.data, function(err)
         {
             return res.status(200).json({
                 success: true,
                 origin: "audio_streaming_service",
                 data: {
                 message: "Audio file saved with address",
-                result: address} }); 
+                result: filePath} }); 
         })
     }
     catch (error) {
