@@ -41,7 +41,7 @@ namespace MSPublicLibrary.Controllers
 
             if (status.Count < 1)
             {
-                string errorMessage  = "No song was found";
+                string errorMessage  = "No status was found";
                 returnObject = JSONFormatter.ErrorMessageFormatter(errorMessage);
                 return BadRequest(returnObject);
             }
