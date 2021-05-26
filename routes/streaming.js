@@ -3,11 +3,11 @@ import fileSystem, { fstat } from 'fs';
 
 const router = express.Router();
 
-router.get("/Streaming", async (req, res) => {
+router.get("/Stream", async (req, res) => {
     try{
+        
         const {address} = req.query;
-
-        var filePath = address;
+        var filePath = process.cwd() + "/spotyme/" + address;
         var stat = fileSystem.statSync(filePath);
 
         res.writeHead(200, {
@@ -21,7 +21,7 @@ router.get("/Streaming", async (req, res) => {
         console.error("Error en Streaming", error);
         return res.status(400).json({
         success: false,
-        origin: "audio_streaming_service",
+        origin: "streaming_service",
         data: {
         message: "No se pudo reproducir la canción",
         result: null} }); 
@@ -38,20 +38,19 @@ router.post("/Save", async (req, res) => {
         var filePath = folderPath + archivo.name;
         
         let arregloBytes = archivo;
-       
-        fileSystem.mkdir(folderPath, null, function(err){
-            if(err){
+
+        fileSystem.mkdir(folderPath, null, function (err) {
+            if (err) {
                 console.log('ERROR: ' + err);
             };
         })
 
-        fileSystem.writeFile(filePath, arregloBytes.data, function(err)
-        {
+        fileSystem.writeFile(filePath, arregloBytes.data, function (err) {
             return res.status(200).json({
                 success: true,
-                origin: "audio_streaming_service",
+                origin: "streaming_service",
                 data: {
-                message: "Audio file saved with address",
+                message: "Se guardo el archivo en directorio ",
                 result: filePath} }); 
         })
     }
@@ -59,9 +58,53 @@ router.post("/Save", async (req, res) => {
         console.error("Error en Guardar Audio", error);
         return res.status(400).json({
         success: false,
-        origin: "audio_streaming_service",
+        origin: "streaming_service",
         data: {
         message: "No se pudo guardar el archivo de audio",
+        result: null} }); 
+    }
+});
+
+router.get("/View", async (req, res) => {
+    try{
+        const {path} = req.query;
+        const {type} = req.query;
+        var filePath = process.cwd() + "/spotyme/" + path + type;
+
+        var contentType = null;
+
+        if ( type === ".png") {
+            contentType = "image/png";
+        } 
+        else if ( type === ".jpeg") {
+            contentType = "image/jpeg";
+        } 
+        else if ( type === ".jpg") {
+            contentType = "image/jpg";
+        }
+
+        fileSystem.readFile(filePath, function(err, content)
+        {
+            if(err) {return res.status(400).json({
+                success: false,
+                origin: "audio_streaming_service",
+                data: {
+                message: "No se pudo encontrar la imagen en ruta" + filePath,
+                result: null} });
+            }
+
+            res.writeHead(200, { 
+                "Content-Type": contentType });
+            res.end(content, 'utf-8');
+        })
+    }
+    catch (error) {
+        console.error("Error en Streaming", error);
+        return res.status(400).json({
+        success: false,
+        origin: "audio_streaming_service",
+        data: {
+        message: "No se pudo mostrar la imagen",
         result: null} }); 
     }
 });

@@ -11,11 +11,11 @@ const PORT = 8083;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileupload());
-app.use("/audio", audioRouter);
+app.use("/File", audioRouter);
 
 app.all("*", (req, res) => res.status(400).json({
     success: false,
-    origin: "audio_streaming_service",
+    origin: "streaming_service",
     data: {
     message: "This route does not exist",
     result: null} }));
