@@ -41,7 +41,7 @@ router.post("/Save", async (req, res) => {
 
         fileSystem.mkdir(folderPath, null, function (err) {
             if (err) {
-                console.log('ERROR: ' + err);
+                console.log('AVISO: Guardando en directorio de album existente');
             };
         })
 
