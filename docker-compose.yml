@@ -55,6 +55,7 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "server=mysql_account;user=spotymeAdmin;password=proyectoredes;database=Accounts"
+        container_name: Cuenta
     # Servicio de biblioteca publica
     ms_public_library:
         image: ms_public_library_spotyme
@@ -67,6 +68,7 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "mongodb://spotymeAdmin:proyectoredes@mongo_public_library"
+        container_name: Public
     # Servicio de biblioteca privada
     ms_private_library:
         image: ms_private_library_spotyme
@@ -79,6 +81,7 @@ services:
             dockerfile: Dockerfile
         environment: 
             DB_CONNECTION_STRING: "mongodb://spotymeAdmin:proyectoredes@mongo_private_library"
+        container_name: Private
     # Servicio de Audio
     ms_streaming:
         image: ms_streaming_spotyme
@@ -90,6 +93,7 @@ services:
         build: 
             context: ../MSStreaming/
             dockerfile: Dockerfile
+        container_name: Streaming
 volumes:
     db_volume_Accounts:
     db_volume_public_library:
