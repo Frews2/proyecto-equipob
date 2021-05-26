@@ -1,0 +1,10 @@
+
+*.cmd
+*.ps1
+*.map
+*.md
+*.js
+*.json
+*.ts
+*.yml
+node_modules/unique-string/license

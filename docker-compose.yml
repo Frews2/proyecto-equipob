@@ -94,6 +94,19 @@ services:
             context: ../MSStreaming/
             dockerfile: Dockerfile
         container_name: Streaming
+    #Api
+    api_spotyme:
+        image: api_spotyme
+        ports:
+            - "4000:4000"
+        build: 
+            context: ../SpotyMeAPI/
+            dockerfile: Dockerfile
+        environment: 
+            MS_ACCOUNT_CONST: "http://ms_account"
+            MS_PUBLIC_LIBRARY_CONST: "http://ms_public_library"
+            MS_PRIVATE_LIBRARY_CONST: "http://ms_private_library"
+            MS_STREAMING_CONST: "http://ms_streaming"
 volumes:
     db_volume_Accounts:
     db_volume_public_library:
