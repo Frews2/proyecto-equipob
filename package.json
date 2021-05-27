@@ -1,7 +1,7 @@
 {
-  "name": "typemeapi",
+  "name": "spotymeapi",
   "version": "1.0.0",
-  "description": "API para consumir los microservicios de TypeMe",
+  "description": "API para consumir los microservicios de SpotyMe",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -16,7 +16,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "got": "^11.8.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

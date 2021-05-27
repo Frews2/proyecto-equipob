@@ -99,7 +99,7 @@ class MicroservicioPrivatelibrary
                 id: id
             }
         })
-        .then(response => {return response.data})
+        .then(response => {return response.data.data})
         .catch(error => {return error.response.data})
     }
 
@@ -138,7 +138,7 @@ class MicroservicioPrivatelibrary
                 id: id
             }
         })
-        .then(response => {return response.data})
+        .then(response => {return response.data.data})
         .catch(error => {return error.response.data})
     }
 
@@ -177,7 +177,7 @@ class MicroservicioPrivatelibrary
                 id: id
             }
         })
-        .then(response => {return response.data})
+        .then(response => {return response.data.data})
         .catch(error => {return error.response.data})
     }
 

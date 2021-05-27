@@ -5,7 +5,7 @@ class MicroservicioPubliclibrary
 {
     async SearchSong(title, id)
     {
-        let url = urlMs + "/Song/SearchSong";
+        let url = urlMS + "/Song/SearchSong";
         return axios.get(url, {
             params: {
                 title: title,
@@ -18,7 +18,7 @@ class MicroservicioPubliclibrary
 
     async ShowPendingSongs()
     {
-        let url = urlMs + "/Song/ShowPendingSongs";
+        let url = urlMS + "/Song/ShowPendingSongs";
         return axios.get(url)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
@@ -26,7 +26,7 @@ class MicroservicioPubliclibrary
 
     async ShowRejectedSongs()
     {
-        let url = urlMs + "/Song/ShowRejectedSongs";
+        let url = urlMS + "/Song/ShowRejectedSongs";
         return axios.get(url)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
@@ -34,7 +34,7 @@ class MicroservicioPubliclibrary
 
     async UploadSongRequest(newSong)
     {
-        let url = urlMs + "/Song/UploadSongRequest";
+        let url = urlMS + "/Song/UploadSongRequest";
         return axios.post(url, newSong)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
@@ -42,7 +42,7 @@ class MicroservicioPubliclibrary
 
     async QueryGenreSongs(genreId)
     {
-        let url = urlMs + "/Song/QueryGenreSongs";
+        let url = urlMS + "/Song/QueryGenreSongs";
         return axios.get(url, {
             params: {
                 genreId: genreId
@@ -54,7 +54,7 @@ class MicroservicioPubliclibrary
 
     async QueryArtistSongs(artistId)
     {
-        let url = urlMs + "/Song/QueryArtistSongs";
+        let url = urlMS + "/Song/QueryArtistSongs";
         return axios.get(url, {
             params: {
                 artistId: artistId
@@ -66,7 +66,7 @@ class MicroservicioPubliclibrary
 
     async QueryAlbumSongs(albumId)
     {
-        let url = urlMs + "/Song/QueryAlbumSongs";
+        let url = urlMS + "/Song/QueryAlbumSongs";
         return axios.get(url, {
             params: {
                 albumId: albumId
@@ -77,7 +77,7 @@ class MicroservicioPubliclibrary
     }
 
     async RejectSong(songId){
-        let url = urlMs + "/Song/RejectSong";
+        let url = urlMS + "/Song/RejectSong";
         return axios.put(url, {
             params:{
                 songId : songId
@@ -88,7 +88,7 @@ class MicroservicioPubliclibrary
     }
 
     async ApproveSong(songId){
-        let url = urlMs + "/Song/ApproveSong";
+        let url = urlMS + "/Song/ApproveSong";
         return axios.put(url, {
             params:{
                 songId : songId
@@ -100,7 +100,7 @@ class MicroservicioPubliclibrary
 
     async SearchMusic(address, id)
     {
-        let url = urlMs + "/Music/SearchMusic";
+        let url = urlMS + "/Music/SearchMusic";
         return axios.post(url, {
             params: {
                 address: address,
@@ -113,7 +113,7 @@ class MicroservicioPubliclibrary
 
     async UploadMusic(newMusic)
     {
-        let url = urlMs + "/Music/UploadMusic";
+        let url = urlMS + "/Music/UploadMusic";
         return axios.post(url, newMusic)
         .then(response => {return response.data.data})
         .catch(error => {return error.response.data})
@@ -121,7 +121,7 @@ class MicroservicioPubliclibrary
 
     async SearchAlbum(name, id)
     {
-        let url = urlMs + "/Album/SearchAlbum";
+        let url = urlMS + "/Album/SearchAlbum";
         return axios.get(url, {
             params: {
                 name: name,
@@ -134,7 +134,7 @@ class MicroservicioPubliclibrary
 
     async UploadAlbum(newAlbum)
     {
-        let url = urlMs + "/Album/UploadAlbum";
+        let url = urlMS + "/Album/UploadAlbum";
         return axios.post(url, newAlbum)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
@@ -142,7 +142,7 @@ class MicroservicioPubliclibrary
 
     async SearchGenre(name, id)
     {
-        let url = urlMs + "/Genre/SearchGenre";
+        let url = urlMS + "/Genre/SearchGenre";
         return axios.get(url, {
             params: {
                 name: name,
@@ -155,7 +155,7 @@ class MicroservicioPubliclibrary
 
     async UploadGenre(newGenre)
     {
-        let url = urlMs + "/Genre/UploadGenre";
+        let url = urlMS + "/Genre/UploadGenre";
         return axios.post(url, newGenre)
         .then(response => {return response.data})
         .catch(error => {return error.response.data})
