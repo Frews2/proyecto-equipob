@@ -106,7 +106,7 @@ services:
             MS_ACCOUNT_CONST: "http://ms_account"
             MS_PUBLIC_LIBRARY_CONST: "http://ms_public_library"
             MS_PRIVATE_LIBRARY_CONST: "http://ms_private_library"
-            MS_STREAMING_CONST: "http://ms_streaming"
+            MS_STREAMING_CONST: "http://ms_streaming:8083"
 volumes:
     db_volume_Accounts:
     db_volume_public_library:
