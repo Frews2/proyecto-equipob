@@ -32,12 +32,13 @@ router.post("/Save", async (req, res) => {
     
     try{
         const {album} = req.query;
-        const {archivo} = req.files;
-
+        const {archivo} = req.body;
         var folderPath = process.cwd() + "/spotyme/" + album + "/";
         var filePath = folderPath + archivo.name;
         
         let arregloBytes = archivo;
+        let buffer = Buffer.from(arregloBytes.data.data);
+        
 
         fileSystem.mkdir(folderPath, null, function (err) {
             if (err) {
@@ -45,7 +46,7 @@ router.post("/Save", async (req, res) => {
             };
         })
 
-        fileSystem.writeFile(filePath, arregloBytes.data, function (err) {
+        fileSystem.writeFile(filePath, buffer, function (err) {
             return res.status(200).json({
                 success: true,
                 origin: "streaming_service",
