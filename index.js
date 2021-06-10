@@ -4,6 +4,7 @@ import publiclibraryRouter from './routes/publiclibrary.js';
 import privatelibraryRouter from './routes/privatelibrary.js';
 import streamingRouter from './routes/streaming.js';
 import cors from 'cors';
+import fileupload from "express-fileupload";
 
 const app = express();
 
@@ -27,8 +28,9 @@ var corsOptionsDelegate = function (req, callback) {
 }
  
 app.use(cors());
-app.use(express.urlencoded({extended: true})); 
-app.use(express.json());
+app.use(fileupload());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 app.use("/account", cors(corsOptionsDelegate), accountRouter);
 app.use("/publiclibrary", cors(corsOptionsDelegate), publiclibraryRouter);
